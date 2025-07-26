@@ -1,0 +1,100 @@
+package com.example.farmos
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Scaffold
+import com.example.farmos.ui.theme.AndroidAssessmentTheme
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.farmos.Functions.ChatScreen
+import com.example.farmos.Functions.CropScanner
+import com.example.farmos.Functions.Insights
+import com.example.farmos.Functions.satellite
+import com.example.farmos.Onboarding.SplashScreen
+import com.example.farmos.ViewModel.AiViewModel
+import com.example.farmos.ui.screens.MonitorPage
+import com.example.farmos.ui.screens.SubsidyScreen
+import com.example.farmos.ui.screens.onboarding.OnboardingConfirmScreen
+import com.example.farmos.ui.screens.onboarding.OnboardingCropSuggestScreen
+import com.example.farmos.ui.screens.onboarding.OnboardingLocationScreen
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Fullscreen immersive mode
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+
+        setContent {
+            AndroidAssessmentTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                   val pad = innerPadding
+                   val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = nav.splash
+                    ) {
+                        // Splash / Intro
+                        composable(nav.splash) {
+                            SplashScreen(navController)
+                        }
+
+                        // Onboarding Flow
+                        composable(nav.onboardingLocation) {
+                            OnboardingLocationScreen(navController)
+                        }
+                        composable(nav.onboardingCrops) {
+                            OnboardingCropSuggestScreen(navController)
+                        }
+                        composable(nav.onboardingConfirm) {
+                            OnboardingConfirmScreen(navController)
+                        }
+
+                        // Main Monitor Page
+                        composable(nav.monitor) {
+                            MonitorPage(navController)
+                        }
+
+                        // Crop Scanner
+                        composable(nav.cropScan) {
+                            CropScanner(navController)
+                        }
+
+                        // Insights & Satellite
+                        composable(nav.insights) {
+                            Insights(navController)
+                        }
+                        composable(nav.satellite) {
+                            satellite(navController)
+                        }
+
+                        // AI Chat (Gemini)
+                        composable(nav.chatModel) {
+                            ChatScreen()
+                        }
+
+                        // Subsidy Information
+                        composable(nav.subsidy) {
+                            SubsidyScreen()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

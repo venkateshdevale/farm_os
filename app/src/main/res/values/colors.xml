@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fresh Green for primary actions -->
+    <color name="purple_200">#FF81C784</color> <!-- Light farm green -->
+
+    <!-- Rich harvest green -->
+    <color name="purple_500">#FF388E3C</color> <!-- Medium leafy green -->
+
+    <!-- Deep fertile soil green -->
+    <color name="purple_700">#FF1B5E20</color> <!-- Dark earthy green -->
+
+    <!-- Aqua accent for irrigation/water features -->
+    <color name="teal_200">#FF80CBC4</color> <!-- Light teal water tone -->
+
+    <!-- Deeper aqua for contrasts -->
+    <color name="teal_700">#FF004D40</color> <!-- Dark teal for depth -->
+
+    <!-- Standard colors (kept same) -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Golden Harvest highlight -->
+    <color name="golden">#FFD4AF37</color>
+</resources>
