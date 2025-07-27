@@ -139,7 +139,7 @@ fun OnboardingLocationScreen(
                     if (polygonArr.size == 4) {
                         Polygon(
                             points = polygonArr,
-                            fillColor = Color(0x332F4D1D),
+                            fillColor = Color(0x88FF0000),
                             strokeColor = Color(0xFF2F4D1D),
                             strokeWidth = 3f
                         )
@@ -228,7 +228,7 @@ suspend fun getAddressFromLatLng(
     onResult: (district: String, state: String) -> Unit
 ) {
     try {
-        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.latitude},${latLng.longitude}&key=YOUR_API_KEY"
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.latitude},${latLng.longitude}&key=AIzaSyB6KTchKmbzR5bVnic0E9GUtu8sriqs42o"
         val request = Request.Builder().url(url).build()
         val response = OkHttpClient().newCall(request).execute()
         val body = JSONObject(response.body?.string() ?: "")
