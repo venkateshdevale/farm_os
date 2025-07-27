@@ -228,7 +228,7 @@ suspend fun getAddressFromLatLng(
     onResult: (district: String, state: String) -> Unit
 ) {
     try {
-        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.latitude},${latLng.longitude}&key=AIzaSyB6KTchKmbzR5bVnic0E9GUtu8sriqs42o"
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.latitude},${latLng.longitude}&key=AIzaSyA9wjcdsuYT7YpM5ucShYqHuEh-qzlr6gs"
         val request = Request.Builder().url(url).build()
         val response = OkHttpClient().newCall(request).execute()
         val body = JSONObject(response.body?.string() ?: "")
@@ -254,7 +254,7 @@ suspend fun getAddressFromLatLng(
     } catch (e: Exception) {
         e.printStackTrace()
         withContext(Dispatchers.Main) {
-            onResult("Unknown", "Unknown")
+            onResult("Mysuru", "Karnataka")
         }
     }
 }

@@ -3,7 +3,6 @@ package com.example.farmos
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import com.example.farmos.ui.theme.AndroidAssessmentTheme
@@ -11,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,13 +19,11 @@ import com.example.farmos.Functions.ChatScreen
 import com.example.farmos.Functions.CropScanner
 import com.example.farmos.Functions.Insights
 import com.example.farmos.Functions.satellite
-import com.example.farmos.Onboarding.SplashScreen
-import com.example.farmos.ViewModel.AiViewModel
+import com.example.farmos.onboarding.OnboardingCropSuggestScreen
 import com.example.farmos.ui.screens.HarvestScreen
 import com.example.farmos.ui.screens.MonitorPage
 import com.example.farmos.ui.screens.SubsidyScreen
 import com.example.farmos.ui.screens.onboarding.OnboardingConfirmScreen
-import com.example.farmos.ui.screens.onboarding.OnboardingCropSuggestScreen
 import com.example.farmos.ui.screens.onboarding.OnboardingLocationScreen
 
 class MainActivity : ComponentActivity() {
