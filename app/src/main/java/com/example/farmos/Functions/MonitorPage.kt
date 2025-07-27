@@ -1,6 +1,10 @@
 package com.example.farmos.ui.screens
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.graphics.Color as AndroidColor
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,12 +25,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import com.example.farmos.R
 import com.example.farmos.nav
@@ -40,6 +47,7 @@ import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 @OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun MonitorPage(navController: NavController) {
     // Mock farm name and current date
@@ -72,6 +80,7 @@ fun MonitorPage(navController: NavController) {
             )
             .statusBarsPadding()
     ) {
+        val context = LocalContext.current
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,6 +97,9 @@ fun MonitorPage(navController: NavController) {
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
+                    .clickable {
+                        pushNotification(context = context,"Disease Alert")
+                    }
             )
 
             // Farm Timeline
@@ -172,7 +184,7 @@ fun MonitorPage(navController: NavController) {
                     .clip(RoundedCornerShape(28.dp)),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00695C))
             ) {
-                Text("Talk to HarvestorAI", color = Color.White, fontSize = 18.sp)
+                Text("Talk to FarmAI", color = Color.White, fontSize = 18.sp)
             }
 
             Spacer(modifier = Modifier.height(100.dp)) // space for FABs
@@ -334,6 +346,38 @@ fun InsightCard(title: String, value: String) {
             Text(title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF4CAF50))
             Text(value, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF2E7D32))
         }
+    }
+}
+fun pushNotification(context: Context, title: String, message: String = "A crop disease is spreading in nearby farms. Take preventive action!") {
+    val channelId = "disease_alerts"
+    val notificationId = 1001
+
+    // Create notification channel (required for API 26+)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = "Disease Alerts"
+        val descriptionText = "Notifications for nearby farm disease outbreaks"
+        val importance = NotificationManager.IMPORTANCE_HIGH // Heads-up alert
+        val channel = NotificationChannel(channelId, name, importance).apply {
+            description = descriptionText
+        }
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    // Build the notification
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(android.R.drawable.stat_sys_warning) // Replace with your drawable
+        .setContentTitle(title)
+        .setContentText(message)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setCategory(NotificationCompat.CATEGORY_ALARM)
+        .setAutoCancel(true)
+        .setDefaults(NotificationCompat.DEFAULT_ALL) // Vibrate, sound, lights
+
+    // Show it
+    with(NotificationManagerCompat.from(context)) {
+        notify(notificationId, builder.build())
     }
 }
 

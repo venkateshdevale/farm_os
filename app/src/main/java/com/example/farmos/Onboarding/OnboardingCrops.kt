@@ -1,5 +1,6 @@
 package com.example.farmos.ui.screens.onboarding
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -29,13 +30,14 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.*
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.farmos.Data.OnboardingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnboardingCropSuggestScreen(navController: NavController) {
+fun OnboardingCropSuggestScreen(navController: NavController, onboardingViewModel : OnboardingViewModel) {
     var selectedCrop by remember { mutableStateOf<CropSuggestion?>(null) }
     var infoCrop by remember { mutableStateOf<CropSuggestion?>(null) }
-
+    Log.d("Shabaz", onboardingViewModel.toString())
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -47,6 +49,24 @@ fun OnboardingCropSuggestScreen(navController: NavController) {
             .padding(16.dp)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFD8F5DC)),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Farm details", fontWeight = FontWeight.Bold, color = Color(0xFF2F4D1D))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("District: ${onboardingViewModel.district}")
+                    Text("State: ${onboardingViewModel.state}")
+                    Text("Area: ${"%.2f".format(onboardingViewModel.areaInAcres)} acres")
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Best Crops for Your Farm",
                 style = MaterialTheme.typography.titleLarge,
@@ -55,7 +75,6 @@ fun OnboardingCropSuggestScreen(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-
             mockCropSuggestions.forEach { crop ->
                 CropCard(
                     crop = crop,

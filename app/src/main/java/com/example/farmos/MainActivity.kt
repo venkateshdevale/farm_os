@@ -12,9 +12,11 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.farmos.Data.OnboardingViewModel
 import com.example.farmos.Functions.ChatScreen
 import com.example.farmos.Functions.CropScanner
 import com.example.farmos.Functions.Insights
@@ -44,22 +46,22 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                    val pad = innerPadding
                    val navController = rememberNavController()
-
+                    val onboardingViewModel = viewModel<OnboardingViewModel>() // or use viewModel()
                     NavHost(
                         navController = navController,
-                        startDestination = nav.splash
+                        startDestination = nav.onboardingLocation
                     ) {
                         // Splash / Intro
-                        composable(nav.splash) {
-                            SplashScreen(navController)
-                        }
+//                        composable(nav.splash) {
+//                            SplashScreen(navController)
+//                        }
 
                         // Onboarding Flow
                         composable(nav.onboardingLocation) {
-                            OnboardingLocationScreen(navController)
+                            OnboardingLocationScreen(navController, onboardingViewModel)
                         }
                         composable(nav.onboardingCrops) {
-                            OnboardingCropSuggestScreen(navController)
+                            OnboardingCropSuggestScreen(navController, onboardingViewModel)
                         }
                         composable(nav.onboardingConfirm) {
                             OnboardingConfirmScreen(navController)
