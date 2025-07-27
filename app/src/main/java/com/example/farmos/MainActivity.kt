@@ -23,6 +23,7 @@ import com.example.farmos.Functions.Insights
 import com.example.farmos.Functions.satellite
 import com.example.farmos.Onboarding.SplashScreen
 import com.example.farmos.ViewModel.AiViewModel
+import com.example.farmos.ui.screens.HarvestScreen
 import com.example.farmos.ui.screens.MonitorPage
 import com.example.farmos.ui.screens.SubsidyScreen
 import com.example.farmos.ui.screens.onboarding.OnboardingConfirmScreen
@@ -70,6 +71,11 @@ class MainActivity : ComponentActivity() {
                         // Main Monitor Page
                         composable(nav.monitor) {
                             MonitorPage(navController)
+                        }
+
+                        // Crop Scanner
+                        composable(nav.harvest) {
+                            HarvestScreen(navController)
                         }
 
                         // Crop Scanner

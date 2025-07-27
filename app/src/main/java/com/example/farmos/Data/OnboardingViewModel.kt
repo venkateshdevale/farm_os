@@ -4,13 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 
 class OnboardingViewModel : ViewModel() {
-
     var farmName by mutableStateOf("Basappa Farm")
-    var district by mutableStateOf("Kolar")
-    var state by mutableStateOf("Karnataka")
-    var areaInAcres by mutableStateOf(0.25)
-
-
+    var district by mutableStateOf("")
+    var state by mutableStateOf("")
+    var areaInAcres by mutableStateOf(0.0)
+    var farmPolygon by mutableStateOf<List<LatLng>>(emptyList())
 }

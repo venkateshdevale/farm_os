@@ -39,7 +39,6 @@ import com.example.farmos.R
 fun CropScanner(navController: NavController) {
     val DM_Sans = FontFamily(Font(R.font.dm_sans, FontWeight.Normal))
 
-    // Captured photos state
     var capturedPhotos by remember { mutableStateOf<List<Pair<Bitmap?, String>>>(emptyList()) }
 
     // Mock previous timeline photos
@@ -49,7 +48,6 @@ fun CropScanner(navController: NavController) {
         Pair(null, "Day 45")
     )
 
-    // Camera launcher
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { imageBitmap ->
@@ -57,18 +55,16 @@ fun CropScanner(navController: NavController) {
             capturedPhotos = listOf(Pair(imageBitmap, "Today")) + capturedPhotos
         }
     }
-
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) cameraLauncher.launch(null)
     }
 
-    // Fullscreen container
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(Color(0xFFF7F7F7))
             .padding(16.dp)
     ) {
         Column(
@@ -85,20 +81,31 @@ fun CropScanner(navController: NavController) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = Color(0xFF00695C)
                     )
                 }
-
                 Text(
                     text = "Crop Health Scanner",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = DM_Sans,
-                    color = MaterialTheme.colorScheme.primary
+                    color = Color(0xFF00695C)
                 )
-
                 Spacer(modifier = Modifier.width(48.dp)) // balance
             }
+
+            // Tiny instruction below title
+            Text(
+                text = "Snap a photo of your crop leaves for instant health analysis.\nClick the camera below to start. No internet? No problem—your farm data stays safe on your phone.",
+                fontSize = 11.sp,
+                color = Color.Black,
+                fontFamily = DM_Sans,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 2.dp, bottom = 0.dp),
+                lineHeight = 13.sp,
+                textAlign = TextAlign.Start
+            )
 
             // Camera Preview
             Card(
@@ -106,7 +113,7 @@ fun CropScanner(navController: NavController) {
                     .fillMaxWidth()
                     .height(320.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F8E9)) // soft green
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F8E9))
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Image(
@@ -117,7 +124,6 @@ fun CropScanner(navController: NavController) {
                             .clickable { cameraPermissionLauncher.launch(Manifest.permission.CAMERA) },
                         contentScale = ContentScale.Crop
                     )
-
                     // Capture Button floating on preview
                     FloatingActionButton(
                         onClick = { cameraPermissionLauncher.launch(Manifest.permission.CAMERA) },
@@ -132,24 +138,25 @@ fun CropScanner(navController: NavController) {
                 }
             }
 
-            // Timeline Title
+            // Tiny timeline instruction
             Text(
-                text = "Leaf Health Timeline",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onSurface
+                text = "Your timeline: Compare today’s photo with previous days. Tap to view details and spot issues early!",
+                fontSize = 11.sp,
+                color = Color.Black,
+                fontFamily = DM_Sans,
+                modifier = Modifier.fillMaxWidth(),
+                lineHeight = 13.sp,
+                textAlign = TextAlign.Start
             )
 
-            // Combine new and old photos
+            // Timeline
             val allPhotos = capturedPhotos + oldPhotos
-
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 itemsIndexed(allPhotos) { _, photoPair ->
                     val (bitmap, label) = photoPair
-
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         if (bitmap != null) {
                             Image(
@@ -170,28 +177,40 @@ fun CropScanner(navController: NavController) {
                                 contentScale = ContentScale.Crop
                             )
                         }
-
                         Text(
                             text = label,
-                            fontSize = 14.sp,
-                            modifier = Modifier.padding(top = 4.dp)
+                            fontSize = 13.sp,
+                            color = Color.Black,
+                            fontFamily = DM_Sans,
+                            modifier = Modifier.padding(top = 2.dp)
                         )
                     }
                 }
             }
+
+            // Tiny voice assistant instruction
+            Text(
+                text = "Not sure what’s wrong? Tap the mic and ask FarmAI about leaf diseases, in any language you like!",
+                fontSize = 11.sp,
+                color = Color.Black,
+                fontFamily = DM_Sans,
+                modifier = Modifier.fillMaxWidth(),
+                lineHeight = 13.sp,
+                textAlign = TextAlign.Start
+            )
 
             // Voice Assistant Button
             Button(
                 onClick = { /* TODO: Voice chat with Gemini AI */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
-                    .clip(RoundedCornerShape(25.dp)),
+                    .height(54.dp)
+                    .clip(RoundedCornerShape(27.dp)),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD4AF37))
             ) {
                 Icon(Icons.Default.Mic, contentDescription = "Mic")
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Ask About Diseases", color = Color.Black)
+                Text("Ask About Diseases", color = Color.Black, fontWeight = FontWeight.Bold, fontFamily = DM_Sans)
             }
 
             // Disease Alert Card
@@ -204,15 +223,18 @@ fun CropScanner(navController: NavController) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "⚠ Nearby Disease Alert!",
+                        text = "⚠️ Nearby Disease Alert!",
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
+                        fontFamily = DM_Sans,
                         color = Color.Red
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Powdery mildew detected in nearby farms.\nConsult agriculture authorities and spray recommended fungicides.",
-                        fontSize = 14.sp,
+                        fontSize = 13.sp,
+                        color = Color.Black,
+                        fontFamily = DM_Sans,
                         textAlign = TextAlign.Start
                     )
                 }

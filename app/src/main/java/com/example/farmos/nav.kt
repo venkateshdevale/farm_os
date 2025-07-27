@@ -11,6 +11,8 @@ object nav {
 
     const val monitor = "monitor"
 
+    val harvest = "harvest"
+
     // Onboarding flow
     const val onboardingLocation = "onboarding_location"
     const val onboardingCrops = "onboarding_crops"
