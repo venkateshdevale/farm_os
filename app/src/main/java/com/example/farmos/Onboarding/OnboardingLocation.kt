@@ -46,7 +46,7 @@ fun OnboardingLocationScreen(
     navController: NavController,
     onboardingViewModel: OnboardingViewModel
 ) {
-    val dmSans = FontFamily(Font(com.example.farmos.R.font.dm_sans))
+    val dmSans = FontFamily(Font(R.font.dm_sans))
     val activity = (LocalContext.current as? Activity)
     val context = LocalContext.current
 
@@ -72,7 +72,7 @@ fun OnboardingLocationScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF7F7F7)) // super clean neutral
+            .background(Color(0xFFF7F7F7))
             .padding(16.dp)
     ) {
         Column(
@@ -101,47 +101,7 @@ fun OnboardingLocationScreen(
                 )
             }
 
-            // Instruction card (pitch + story)
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 2.dp, top = 2.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFE4FFD7)),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(2.dp)
-            ) {
-                Text(
-                    text = if (polygonArr.size < 4)
-                        "Step 1 of 3"
-                    else
-                        "Step 2 of 3",
-                    fontFamily = dmSans,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    color = Color(0xFF20521F),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
-                        .padding(bottom = 2.dp),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = if (polygonArr.size < 4)
-                        "Tap the 4 corners of your field below. FarmOS + DhartiMitra need to know your real boundaries—not just for maps, but for the right advice, weather, and disease alerts. \n\nWrong tap? No worries, just tap again anywhere to restart."
-                    else
-                        "Perfect! You’ve drawn your boundary. Double-check the area below, then tap Confirm to let DhartiMitra start watching your farm day and night.",
-                    fontFamily = dmSans,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 14.dp, vertical = 6.dp)
-                )
-            }
-
-            // Map and polygon marking
+            // MAP AND POLYGON MARKING
             Card(
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
@@ -161,7 +121,6 @@ fun OnboardingLocationScreen(
                             polygonArr.add(latLng)
                             districtLatLng = latLng
                         } else {
-                            // Reset if 4 already placed, start new
                             polygonArr.clear()
                             polygonArr.add(latLng)
                             districtLatLng = latLng
@@ -177,7 +136,6 @@ fun OnboardingLocationScreen(
                             title = "Corner ${idx + 1}"
                         )
                     }
-                    // Draw polygon if 4 corners
                     if (polygonArr.size == 4) {
                         Polygon(
                             points = polygonArr,
@@ -189,7 +147,7 @@ fun OnboardingLocationScreen(
                 }
             }
 
-            // Area display with friendly copy
+            // Area display (with witty, modern touch)
             Text(
                 text = if (polygonArr.size < 4)
                     "Mark all 4 corners to see your farm’s area."
@@ -247,7 +205,7 @@ fun OnboardingLocationScreen(
                 }
             }
 
-            // Footer empathy message for trust
+            // Footer empathy message (optional, can remove if you want 0 text)
             Text(
                 text = "Marking your land helps DhartiMitra bring you the right alerts, crop suggestions, and government schemes all year. Your boundary, your advantage.",
                 color = Color(0xFF6A5D2F),

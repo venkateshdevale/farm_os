@@ -1,5 +1,7 @@
 package com.example.farmos.ui.screens.onboarding
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,7 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +24,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.farmos.nav
 import com.example.farmos.R
+import com.example.farmos.nav
+
+// For Lottie: import com.airbnb.lottie.compose.*
 
 @Composable
 fun OnboardingConfirmScreen(navController: NavController) {
     val dmSans = FontFamily(Font(R.font.dm_sans))
-    val botName = "DhartiMitra" // Name your AI bot here!
+    val botName = "DhartiMitra"
 
     Box(
         modifier = Modifier
@@ -43,7 +47,7 @@ fun OnboardingConfirmScreen(navController: NavController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Back button top bar
+            // --- Top bar: back btn only if you want (or remove for full immersion)
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
@@ -57,71 +61,58 @@ fun OnboardingConfirmScreen(navController: NavController) {
                 }
             }
 
-            // Step info (micro-instruction)
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp, top = 6.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFE4FFD7)),
-                elevation = CardDefaults.cardElevation(2.dp)
+            // --- Animated logo or Lottie (prefer animated farm/success!)
+            AnimatedVisibility(
+                visible = true,
+                enter = fadeIn()
             ) {
-                Text(
-                    text = "Step 3 of 3\n\nYou did it! Your farm is now protected and guided by FarmOS and $botName.",
-                    color = Color(0xFF20521F),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 13.sp,
-                    fontFamily = dmSans,
+                Image(
+                    painter = painterResource(id = R.drawable.splashlogo),
+                    contentDescription = "Setup Complete",
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
+                        .size(140.dp)
+                        .padding(top = 16.dp, bottom = 10.dp),
+                    contentScale = ContentScale.Fit
                 )
             }
+            // If using Lottie:
+            // val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.success_anim))
+            // LottieAnimation(composition, iterations = LottieConstants.IterateForever, modifier = Modifier.size(180.dp))
 
-            // Confirmation card with all info
+            // --- Welcome & pitch
+            Text(
+                text = "Welcome to FarmOS!",
+                fontSize = 27.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = dmSans,
+                color = Color(0xFF00695C),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 6.dp)
+            )
+
             Card(
                 shape = RoundedCornerShape(24.dp),
                 elevation = CardDefaults.cardElevation(8.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 6.dp)
+                    .padding(horizontal = 8.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                     modifier = Modifier.padding(18.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.splashlogo),
-                        contentDescription = "Setup Complete",
-                        modifier = Modifier
-                            .size(140.dp)
-                            .padding(top = 8.dp),
-                        contentScale = ContentScale.Fit
-                    )
-
-                    Text(
-                        text = "Welcome to FarmOS!",
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = dmSans,
-                        color = Color(0xFF00695C),
-                        textAlign = TextAlign.Center
-                    )
-
                     Text(
                         text = buildString {
-                            append("Your journey just got easier. ")
-                            append("$botName, your AI farm guardian, is now actively watching your fields—day and night.\n\n")
-                            append("$botName will:\n")
-                            append("• Alert you about weather & disease risks\n")
-                            append("• Suggest ways to boost harvests & profit\n")
-                            append("• Auto-fill subsidy forms & reminders\n\n")
-                            append("Relax and focus on your land—FarmOS and $botName have your back. You’re never alone in the field again.")
+                            append("This isn’t just an app—this is your farm’s AI control tower.\n\n")
+                            append("From now on, $botName works 24x7:\n")
+                            append("• Raises alerts before trouble hits\n")
+                            append("• Boosts your yield & mandi profits\n")
+                            append("• Auto-fills all those painful government forms\n\n")
+                            append("Relax, focus on your land—FarmOS & $botName have you covered. No more flying blind. No more farming alone. 🚀")
                         },
-                        fontSize = 14.sp,
+                        fontSize = 15.sp,
                         fontFamily = dmSans,
                         fontWeight = FontWeight.Normal,
                         color = Color(0xFF444444),
@@ -130,7 +121,7 @@ fun OnboardingConfirmScreen(navController: NavController) {
                 }
             }
 
-            // Go to app (floating gold button)
+            // --- Call to action: Go! button (animated/floating)
             FloatingActionButton(
                 onClick = {
                     navController.navigate(nav.monitor) {
@@ -146,15 +137,15 @@ fun OnboardingConfirmScreen(navController: NavController) {
             ) {
                 Text(
                     "Go!",
-                    fontSize = 19.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = dmSans
                 )
             }
 
-            // Footer empathy message
+            // --- Footer empathy message (no instructions)
             Text(
-                text = "FarmOS and $botName are always working for you. \uD83C\uDF31\nWishing you a happy, prosperous season!",
+                text = "FarmOS & $botName are always working for you.\nWishing you a bumper harvest and zero stress! 🌾",
                 color = Color(0xFF6A5D2F),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 13.sp,
@@ -162,7 +153,7 @@ fun OnboardingConfirmScreen(navController: NavController) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 4.dp, bottom = 2.dp)
+                    .padding(top = 6.dp, bottom = 2.dp)
             )
         }
     }

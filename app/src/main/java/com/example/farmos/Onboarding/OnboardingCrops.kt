@@ -49,47 +49,14 @@ fun OnboardingCropSuggestScreen(
             .background(Color(0xFFF7F7F7))
             .padding(16.dp)
     ) {
-        // Main content
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
                 .padding(bottom = 74.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
-            // Progress/instruction section, empathy and clarity
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 2.dp),
-                shape = RoundedCornerShape(15.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFE4FFD7)),
-                elevation = CardDefaults.cardElevation(2.dp)
-            ) {
-                Text(
-                    text = "Step 3 of 3",
-                    fontFamily = dmSans,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    color = Color(0xFF20521F),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
-                )
-                Text(
-                    text = "Based on your land, FarmOS and DhartiMitra have found crops that give you max yield and minimum headache. Tap any crop to see the real story, not just random advice.",
-                    fontFamily = dmSans,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 2.dp)
-                )
-            }
-
-            // Farm summary card
+            // Farm summary card - clean, on top
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -97,28 +64,41 @@ fun OnboardingCropSuggestScreen(
                 elevation = CardDefaults.cardElevation(2.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Your Farm", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color(0xFF2F4D1D), fontFamily = dmSans)
+                    Text(
+                        "Your Farm Details",
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = dmSans,
+                        fontSize = 15.sp,
+                        color = Color(0xFF2F4D1D)
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("District: ${onboardingViewModel.district}", fontFamily = dmSans, fontSize = 12.sp, color = Color.Black)
+                    Text("State: ${onboardingViewModel.state}", fontFamily = dmSans, fontSize = 12.sp, color = Color.Black)
+                    Text("Area: ${"%.2f".format(onboardingViewModel.areaInAcres)} acres", fontFamily = dmSans, fontSize = 12.sp, color = Color.Black)
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text("District: ${onboardingViewModel.district}", fontFamily = dmSans, fontSize = 13.sp)
-                    Text("State: ${onboardingViewModel.state}", fontFamily = dmSans, fontSize = 13.sp)
-                    Text("Area: ${"%.2f".format(onboardingViewModel.areaInAcres)} acres", fontFamily = dmSans, fontSize = 13.sp)
+                    Text(
+                        "This isn’t just data—this is your farm’s strategy cheat code. All suggestions below are tailored for your exact plot.",
+                        fontFamily = dmSans,
+                        fontSize = 11.sp,
+                        color = Color.DarkGray
+                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = "Recommended Crops For Basappa",
                 fontFamily = dmSans,
                 fontWeight = FontWeight.Bold,
-                fontSize = 19.sp,
+                fontSize = 18.sp,
                 color = Color(0xFF00695C)
             )
             Text(
-                text = "These are not just random picks! These crops are matched for YOUR land, your district's climate, and real price/yield trends. Tap each to see why.",
+                text = "No random picks! These crops are matched for YOUR land, local weather, and real price/yield trends. Tap each for proof.",
                 fontFamily = dmSans,
                 fontWeight = FontWeight.Normal,
-                fontSize = 12.sp,
+                fontSize = 11.sp,
                 color = Color.Black,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -136,13 +116,13 @@ fun OnboardingCropSuggestScreen(
                 )
             }
 
-            // If nothing selected, show subtle prompt
+            // Subtle prompt if none selected
             if (selectedCrop == null) {
                 Text(
-                    text = "Tip: Tap a crop to check the real market and weather data behind the suggestion.",
+                    text = "Tip: Tap a crop to check the real mandi and rainfall data behind each choice.",
                     fontFamily = dmSans,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 11.sp,
+                    fontSize = 10.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
